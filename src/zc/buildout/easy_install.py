@@ -1768,7 +1768,9 @@ def _move_to_eggs_dir_and_compile(dist, dest):
             # Do the compile step.
             redo_pyc(newloc)
             newdist = _get_matching_dist_in_location(dist, newloc)
-            assert newdist is not None  # newloc above is missing our dist?!
+            if not newdist:
+                logger.warn(
+                    "Ditribution not found in path %s.", newloc)
     finally:
         # Remember that temporary directories must be removed
         zc.buildout.rmtree.rmtree(tmp_dest)
